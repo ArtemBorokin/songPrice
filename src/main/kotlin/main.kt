@@ -10,16 +10,27 @@ fun main() {
     val discountOne = 0.01
 
     println ("введите колличество песен для покупки")
-    var itemCount:Int   = readLine()!!. toInt()
+    var itemCount:Int   = readln().toInt()
     val totalPrice = itemPrice * itemCount
-    val result = if (totalPrice > discountStart && totalPrice < discountStop) totalPrice - discount
-    else totalPrice
-    println("покупка - $totalPrice рублей →")
-    println("после применения скидки в $discount рублей — $result рублей.")
 
-    val resultFive =  if (totalPrice > (discountStop +1)) totalPrice - ((totalPrice - discount) * discountFive) else totalPrice - discount
-    println("после применения 5% скидки — $resultFive рублей.")
-    val resultOne=  if (totalPrice > 1) totalPrice - ((totalPrice - discount) * discountFive) - (((totalPrice - discount) * discountFive) * discountOne) else totalPrice
-    println("после применения 1% скидки — $resultOne рубля.")
+    println ("введите 1, если вы регулярный покупатель")
+    var regularCustomer:Int   = readln().toInt()
+
+    var result = when {
+        totalPrice in discountStart..discountStop -> {
+            print("после применения скидки в $discount рублей - ")
+            totalPrice - discount
+        }
+        totalPrice > discountStop -> {
+            print("после применения 5% скидки — ")
+            totalPrice - (totalPrice*discountFive).toInt()
+        }
+        else -> { totalPrice }
+    }
+    println("$result рублей.")
+    if(regularCustomer == 1) {
+        result -= (result*discountOne).toInt()
+        println("после применения скидки регулярного покупателя — $result рублей.")
+    }
 
 }
